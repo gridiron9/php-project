@@ -79,24 +79,24 @@
 
 <form class="filter-form" method="get">
     <label for="category">Category:</label>
-    <input type="text" name="category" id="category" placeholder="Search by category" value="">
+    <input type="text" name="category" id="category" placeholder="Search by category" value="<?php if (isset($_GET['category'])) echo $_GET['category']; else echo '' ?>">
 
     <label for="gender">Gender:</label>
     <select name="gender" id="gender">
         <option value="">All</option>
-        <option value="male">Male</option>
-        <option value="female">Female</option>
+        <option value="male" <?php if (isset($_GET['gender']) && $_GET['gender'] == 'male') echo 'selected="selected"'?>>Male</option>
+        <option value="female" <?php if (isset($_GET['gender']) && $_GET['gender'] == 'female') echo 'selected="selected"'?>>Female</option>
     </select>
 
     <label for="dob">Date of Birth:</label>
-    <input type="date" name="dob" id="dob">
+    <input type="date" name="dob" id="dob" value="<?php if (isset($_GET['dob']) && $_GET['dob'] != '') echo date('Y-m-d',strtotime($_GET["dob"])); else echo null ?>">
 
     <label for="age">Age:</label>
-    <input type="number" name="age" id="age">
+    <input type="number" name="age" id="age" value="<?php if (isset($_GET['age']) && $_GET['age'] != "")  echo $_GET['age']; else echo null ?>">
 
     <label for="age-range">Age Range:</label>
-    <input type="number" name="age-range-min" id="age-range-min" placeholder="Min">
-    <input type="number" name="age-range-max" id="age-range-max" placeholder="Max">
+    <input type="number" name="age-range-min" id="age-range-min" placeholder="Min" value="<?php if (isset($_GET['age-range-min']) && $_GET['age-range-min'] != "")  echo $_GET['age-range-min']; else echo null ?>">
+    <input type="number" name="age-range-max" id="age-range-max" placeholder="Max" value="<?php if (isset($_GET['age-range-max']) && $_GET['age-range-max'] != "")  echo $_GET['age-range-min']; else echo null ?>">
 
     <button type="submit">Apply Filters</button>
 </form>
@@ -104,15 +104,17 @@
 <?php
 include 'db.php';
 
-// Paginate the data
 $page = isset($_GET['page']) ? $_GET['page'] : 1;
+$param = $_GET;
+$param['page'] = $page;
+//var_dump($_GET['dob']);
+//die();
+// Paginate the data
+
 $perPage = 50;
-$startIndex = ($page - 1) * $perPage;
-//$column_count = get_column_count($connect);
+$startIndex = ((int)$page - 1) * $perPage;
 $records = get_from_db($connect, $page, $_GET, $startIndex);
 $totalPages =  ceil(mysqli_num_rows(get_column_count($connect, $_GET))/$perPage);
-
-var_dump($records);
 
 // Display the table
 echo '<table  border="1">';
@@ -145,7 +147,9 @@ for ($i = $startRange; $i <= $endRange; $i++) {
     if ($i == $page) {
         echo '<span class="current">' . $i . '</span>';
     } else {
-        echo '<a href="?page=' . $i . '">' . $i . '</a>';
+        $param["page"] = $i;
+        $url = http_build_query($param);
+        echo '<a href="?' . $url .'">' . $i . '</a>';
     }
     //echo '<a href="?page=' . $i . '">' . $i . '</a> ';
 }
@@ -155,7 +159,9 @@ if ($endRange < $totalPages) {
     if ($endRange < $totalPages - 1) {
         echo '...';
     }
-    echo '<a href="?page=' . $totalPages . '">' . $totalPages . '</a>';
+    $param["page"] = $totalPages;
+    $url = http_build_query($param);
+    echo '<a href="?' . $url . '">' . $totalPages . '</a>';
 }
 echo '</div>';
 ?>

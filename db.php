@@ -45,7 +45,7 @@ function insert_to_db($connect, $rows){
 
 function get_from_db($connect, $page, $filters, $startIndex){
     $sql = "SELECT * FROM users WHERE id >0";
-    if (isset($filters['category'])) {
+    if (isset($filters['category']) && $filters['category'] != '') {
         $category = $filters['category'];
         $sql .= " and category  like '%$category%'";
     }
@@ -55,16 +55,24 @@ function get_from_db($connect, $page, $filters, $startIndex){
     }
     if (isset($filters['dob']) && $filters['dob'] != '') {
         $date_birth = $filters['dob'];
-        $sql .= " AND DATE(birthdate) = " .$date_birth;
+        $sql .= " AND DATE(birthDate) = '" . $date_birth . "'";
+
     }
     if (isset($filters['age']) && $filters['age'] != '') {
         $age = $filters['age'];
-        $sql .= " and age  like '%$age%'";
+        $sql .= " and DATE_FORMAT(FROM_DAYS(DATEDIFF(NOW(), birthDate)), '%Y') + 0 = $age";
+    }
+    if (isset($filters['age-range-min']) && $filters['age-range-min'] != '') {
+        $min_age = $filters['age-range-min'];
+        $sql .= " and DATE_FORMAT(FROM_DAYS(DATEDIFF(NOW(), birthDate)), '%Y') + 0 >= $min_age";
+    }
+    if (isset($filters['age-range-max']) && $filters['age-range-max'] != '') {
+        $max_age = $filters['age-range-max'];
+        $sql .= " and DATE_FORMAT(FROM_DAYS(DATEDIFF(NOW(), birthDate)), '%Y') + 0 <= $max_age";
     }
 
     $sql .= " LIMIT 50 OFFSET " .$startIndex;
-    var_dump($sql);
-    //die();
+
     $response = mysqli_query($connect, $sql);
 
     return $response;
@@ -86,7 +94,16 @@ function get_column_count($connect, $filters){
     }
     if (isset($filters['age']) && $filters['age'] != '') {
         $age = $filters['age'];
-        $sql .= " and age  like '%$age%'";
+        $sql .= " and DATE_FORMAT(FROM_DAYS(DATEDIFF(NOW(), birthDate)), '%Y') + 0 = $age";
+    }
+
+    if (isset($filters['age-range-min']) && $filters['age-range-min'] != '') {
+        $min_age = $filters['age-range-min'];
+        $sql .= " and DATE_FORMAT(FROM_DAYS(DATEDIFF(NOW(), birthDate)), '%Y') + 0 >= $min_age";
+    }
+    if (isset($filters['age-range-max']) && $filters['age-range-max'] != '') {
+        $max_age = $filters['age-range-max'];
+        $sql .= " and DATE_FORMAT(FROM_DAYS(DATEDIFF(NOW(), birthDate)), '%Y') + 0 <= $max_age";
     }
 
     $response = mysqli_query($connect, $sql);
