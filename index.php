@@ -76,6 +76,9 @@
 </head>
 <body>
 <h2>User Data</h2>
+<form method="post" action="index.php" style="position: absolute;top: 10px;right: 10px;">
+    <button type="submit" name="export">Export to CSV</button>
+</form>
 
 <form class="filter-form" method="get">
     <label for="category">Category:</label>
@@ -103,6 +106,53 @@
 
 <?php
 include 'db.php';
+
+$db = new Database();
+
+$db->query_builder($_GET);
+
+
+
+die($db->insert_to_db());
+
+
+
+
+
+$check_table = check_if_table_exists($connect, "users");
+
+
+
+if (isset($_POST['export'])) {
+    // SQL query to retrieve data from the users table
+    $sql = "SELECT id, firstname, lastname, email FROM users limit 50";
+    $result = $connect->query($sql);
+
+    if ($result->num_rows > 0) {
+        // Open a file for writing
+        $file = fopen("users.csv", "w");
+
+        // Write the header to the CSV file
+        fputcsv($file, array('ID', 'First Name', 'Last Name', 'Email'));
+
+        // Loop through the result set and write data to the CSV file
+        while ($row = $result->fetch_assoc()) {
+            fputcsv($file, $row);
+        }
+
+        // Close the file
+        fclose($file);
+
+        echo "CSV file generated successfully.";
+    } else {
+        echo "No records found in the users table.";
+    }
+
+// Close the database connection
+    $conn->close();
+
+}
+
 
 $page = isset($_GET['page']) ? $_GET['page'] : 1;
 $param = $_GET;
