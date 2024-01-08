@@ -73,7 +73,9 @@ function extract_to_csv($connect, $page, $filter, $startIndex, $query){
         // Close the file
         fclose($file);
 
-        echo "CSV file generated successfully.";
+        echo '<script language="javascript">';
+        echo 'alert("CSV file generated successfully.")';
+        echo '</script>';
     } else {
         echo "No records found in the users table.";
     }
