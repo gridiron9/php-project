@@ -5,12 +5,16 @@ Test Project.
 
 Links:
 -For website use http://localhost/. Used port here is 80 but there is no need to type it.
+
 -For mysql management type http://localhost:8001/. 
 
 Process:
 -On first open code will check if there is table in the db or not. If there is not it will create it and inform you.
+
 -Then after you refreshed the page, code automatically will start to read from csv file and insert data to table. You can see execution time.
+
 -Voala you are ready. Data is displayed in table format, all the filters is there. You can play around. 
+
 -To export table data to .csv file, click the button on top right corner and users.csv will be stored inside of exports folder. 
 
 
