@@ -4,6 +4,7 @@ Test Project.
 2. Once it is finished open it in Phpstorm, VSCode or etc. Open terminal and go to Projects directory. Then run docker compose up. There are 3 containers needs to be run. Wait for them and if it`s finished you are good to go.
 
 Links:
+
 -For website use http://localhost/. Used port here is 80 but there is no need to type it.
 
 -For mysql management type http://localhost:8001/. 
