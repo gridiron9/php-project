@@ -1,7 +1,7 @@
 Test Project.
 
 1. Clone project from github by using "git clone https://github.com/gridiron9/php-project".
-2. Once it is finished open it in Phpstorm, VSCode or etc. Open terminal and go to Projects directory. Then run docker compose up. There are 3 containers needs to be run. Wait for them and if it`s finished you are good to go.
+2. Once it is finished open it in Phpstorm, VSCode or etc. Open terminal and go to Projects directory. Then run "docker compose up". There are 3 containers needs to be run. Wait for them and if it`s finished you are good to go.
 
 Links:
 
@@ -22,8 +22,8 @@ Process:
 
 
 If on first open to localhost, you face "Call to undefined function mysqli_connect()", it is because php library is not installed. To solve it.
-1. Get names of docker ps. Name should probably by "inter_project-www-1".
+1. Get names of docker ps. Name should probably by "php-project-www-1".
 2. Open internal command prompt of container with "docker exec -it <container_name> bash". In this case it should be
-"docker exec -it inter_project-www-1 bash".
+"docker exec -it php-project-www-1 bash".
 3. Run following command "docker-php-ext-install mysqli && docker-php-ext-enable mysqli && apachectl restart". Problem should be solved.
 
