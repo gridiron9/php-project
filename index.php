@@ -108,7 +108,7 @@
 include 'db.php';
 include 'view.php';
 
-$homepage = file_get_contents('dataset.txt');
+$homepage = file_get_contents('dataset.csv');
 $rows = explode("\n", $homepage);
 $headers = str_getcsv(array_shift($rows));
 
