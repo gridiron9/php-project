@@ -22,7 +22,7 @@ Process:
 
 
 If on first open to localhost, you face "Call to undefined function mysqli_connect()", it is because php library is not installed. To solve it.
-1. Get names of docker ps. Name should probably by "php-project-www-1".
+1. Get names of docker ps. The container used for PHP service should install the dependencies. If there is no change in the name of the folder and docker-compose.yml file, name should probably by "php-project-www-1".
 2. Open internal command prompt of container with "docker exec -it <container_name> bash". In this case it should be
 "docker exec -it php-project-www-1 bash".
 3. Run following command "docker-php-ext-install mysqli && docker-php-ext-enable mysqli && apachectl restart". Problem should be solved.
