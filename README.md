@@ -9,6 +9,7 @@ Links:
 -For mysql management type http://localhost:8001/. 
 
 Process:
+
 -On first open code will check if there is table in the db or not. If there is not it will create it and inform you.
 
 -Then after you refreshed the page, code automatically will start to read from csv file and insert data to table. You can see execution time.
